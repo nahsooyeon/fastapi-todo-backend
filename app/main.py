@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from .database import Base, engine
-from .routes import todo
+from app.api import router as api_router  # api.py에서 라우터 가져오기
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
+# 라우터 등록 (api.py에 정의된 모든 라우터 등록)
+app.include_router(api_router)
 
-app.include_router(todo.router, prefix="/api/v1")
+@app.get("/")
+def read_root():
+    return {"message": "Hello, World!"}
